@@ -13,8 +13,11 @@ public class Database {
 
     public Database() {
         try {
+            Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ssc_2021",
                     "ssc", "A123456b");
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("select * from user");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -67,7 +70,7 @@ public class Database {
         }
     }
 
-    public void deleteUser(String username) {
+    public void removeUser(String username) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM ssc_2021.user WHERE username=?");
             preparedStatement.setString(1, username);

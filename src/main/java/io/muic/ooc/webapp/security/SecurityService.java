@@ -33,8 +33,8 @@ public class SecurityService {
     public boolean login(HttpServletRequest request) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        User user = userService.findByUsername(username);
-        if (user != null && Objects.equals(user.getPassword(), password)) {
+//        User user = userService.findByUsername(username);
+        if (userService.authenticateUser(username, password)) {
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
             return true;
