@@ -1,13 +1,15 @@
 package io.muic.ooc.webapp.security;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Objects;
 
 public class SecurityService {
 
-    public UserService userService;
+    private UserService userService;
+
+    public UserService getUserService() {
+        return userService;
+    }
 
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -33,10 +35,10 @@ public class SecurityService {
     public boolean login(HttpServletRequest request) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-//        User user = userService.findByUsername(username);
-        if (userService.authenticateUser(username, password)) {
+        if (userService.authenticatedUser(username, password)) {
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
+            session.setAttribute("password", password);
             return true;
         }
         else {

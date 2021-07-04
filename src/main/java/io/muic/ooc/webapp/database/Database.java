@@ -24,7 +24,7 @@ public class Database {
         }
     }
 
-    public boolean authenticateUser(String username, String password) {
+    public boolean authenticatedUser(String username, String password) {
         boolean check = false;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -80,8 +80,8 @@ public class Database {
         }
     }
 
-    public HashMap<String, User> getAllUsers() {
-        HashMap<String, User> allUsers = new HashMap<>();
+    public List<User> getAllUsers() {
+        ArrayList<User> allUsers = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM ssc_2021.user");
             ResultSet rs = preparedStatement.executeQuery();
@@ -91,7 +91,7 @@ public class Database {
                 String password = rs.getString("password");
                 String name = rs.getString("name");
                 User user = new User(username, password, name, id);
-                allUsers.put(username, user);
+                allUsers.add(user);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
