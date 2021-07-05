@@ -4,15 +4,13 @@
     body {text-align: center;}
 </style>
 <body>
-<%--<p>--%>
-<%--    ${error}--%>
-<%--    ${differentTypesOfErrorPossibleInEditingUser}--%>
-<%--</p>--%>
 <p>
 <h2>
-    Please enter the account info you wish to change from ID ${editId}.
+    Please enter the account info you wish to change from user: ${editUser}
 </h2>
-<%--check if username unique as well--%>
+<p>
+    ${notUniqueUsername}
+</p>
 <form action="/edit" method="post">
     <input type="text" placeholder="Enter new username" name="changeUsername" required>
     <input type="text" placeholder="Enter new password" name="changePass" required>

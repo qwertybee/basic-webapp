@@ -32,6 +32,7 @@
         ${deletionSucceeded}
         ${accountEditSucceeded}
         ${registrationSucceeded}
+        ${notUniqueUsername}
     </p>
     <form action="/register" method="get">
         <button type="submit">Add a new user</button>

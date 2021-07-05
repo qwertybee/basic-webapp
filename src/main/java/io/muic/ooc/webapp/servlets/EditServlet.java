@@ -35,15 +35,22 @@ public class EditServlet extends AbstractRoutableHttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserService userService = securityService.getUserService();
         String editUser = (String) req.getSession().getAttribute("editUser");
-        req.getSession().setAttribute("editUser", null);
         int editId = userService.getId(editUser);
+        req.setAttribute("editUser", editUser);
         req.setAttribute("editId", editId);
         String newUsername = req.getParameter("changeUsername");
         String newPass = req.getParameter("changePass");
         String newName = req.getParameter("changeName");
-        userService.editUser(editId,newUsername,newPass,newName);
-        req.setAttribute("accountEditSucceeded", "Edit user info completed");
-        resp.sendRedirect("/");
+        if (!userService.checkIfUserExists(newUsername)) {
+            userService.editUser(editId, newUsername, newPass, newName);
+            req.setAttribute("accountEditSucceeded", "Edit user info completed");
+            resp.sendRedirect("/");
+        }
+        else {
+            req.setAttribute("notUniqueUsername", "Username already exists. Please select a new username.");
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/edit.jsp");
+            requestDispatcher.include(req, resp);
+        }
     }
 
     @Override
