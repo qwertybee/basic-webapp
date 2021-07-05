@@ -10,7 +10,7 @@
     <p>
     <form action="/login" method="post">
         <input type="text" placeholder="Enter Username" name="username" required>
-        <input type="password" placeholder="Enter Username" name="password" required>
+        <input type="password" placeholder="Enter Password" name="password" required>
         <button type="submit">Login</button>
     </form>
     </p>

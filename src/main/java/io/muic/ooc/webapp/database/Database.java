@@ -4,8 +4,8 @@ import io.muic.ooc.webapp.security.User;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class Database {
 
@@ -16,8 +16,6 @@ public class Database {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ssc_2021",
                     "ssc", "A123456b");
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("select * from user");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -43,12 +41,12 @@ public class Database {
         boolean check = false;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT * FROM ssc_2021.user WHERE username=? AND password=?");
+                    "SELECT password FROM ssc_2021.user WHERE username=?");
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
-                check = true;
+                String hashedPass = rs.getString("password");
+                check = BCrypt.checkpw(password, hashedPass);
             }
         }
         catch (SQLException e) {
@@ -74,11 +72,13 @@ public class Database {
     }
     
     public void addUser(String username, String password, String name) {
+        String hashedPass = BCrypt.hashpw(password, BCrypt.gensalt());
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO ssc_2021.user VALUES (DEFAULT, ?, ?, ?)");
-            preparedStatement.setString(1, name);
-            preparedStatement.setString(2, username);
-            preparedStatement.setString(3, password);
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO ssc_2021.user VALUES (DEFAULT, ?, ?, ?)");
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, hashedPass);
+            preparedStatement.setString(3, name);
             preparedStatement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -119,7 +119,7 @@ public class Database {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "UPDATE ssc_2021.user SET username=?, password=?, name=? WHERE id=?");
             preparedStatement.setString(1, changeUsername);
-            preparedStatement.setString(2, changePassword);
+            preparedStatement.setString(2, BCrypt.hashpw(changePassword, BCrypt.gensalt()));
             preparedStatement.setString(3, changeName);
             preparedStatement.setInt(4, currentid);
             preparedStatement.execute();

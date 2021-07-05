@@ -24,7 +24,6 @@ public class LoginServlet extends AbstractRoutableHttpServlet {
         }
         else {
             error = "Username or password incorrect. Please try again.";
-
             request.setAttribute("error", error);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/login.jsp");
             requestDispatcher.include(request, response);

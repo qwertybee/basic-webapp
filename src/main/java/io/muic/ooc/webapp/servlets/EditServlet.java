@@ -1,15 +1,12 @@
 package io.muic.ooc.webapp.servlets;
 
-import io.muic.ooc.webapp.security.User;
 import io.muic.ooc.webapp.security.UserService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class EditServlet extends AbstractRoutableHttpServlet{
 
@@ -35,6 +32,7 @@ public class EditServlet extends AbstractRoutableHttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserService userService = securityService.getUserService();
         String editUser = (String) req.getSession().getAttribute("editUser");
+        req.getSession().setAttribute("editUser", null);
         int editId = userService.getId(editUser);
         req.setAttribute("editUser", editUser);
         req.setAttribute("editId", editId);
