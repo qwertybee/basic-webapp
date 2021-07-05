@@ -2,10 +2,6 @@ package io.muic.ooc.webapp.servlets;
 
 import io.muic.ooc.webapp.security.SecurityService;
 import io.muic.ooc.webapp.security.UserService;
-import io.muic.ooc.webapp.servlets.AbstractRoutableHttpServlet;
-import io.muic.ooc.webapp.servlets.HomeServlet;
-import io.muic.ooc.webapp.servlets.LoginServlet;
-import io.muic.ooc.webapp.servlets.LogoutServlet;
 import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;
 
@@ -19,6 +15,8 @@ public class ServletRouter {
         servletClasses.add(HomeServlet.class);
         servletClasses.add(LoginServlet.class);
         servletClasses.add(LogoutServlet.class);
+        servletClasses.add(RegisterServlet.class);
+        servletClasses.add(EditServlet.class);
     }
 
     public void init(Context ctx) {

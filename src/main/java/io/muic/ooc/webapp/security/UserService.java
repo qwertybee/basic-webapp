@@ -16,6 +16,10 @@ public class UserService {
         return database.authenticatedUser(username, password);
     }
 
+    public int getId(String username) {
+        return database.getId(username);
+    }
+
     public boolean checkIfUserExists(String username) {
         return database.isUser(username);
     }

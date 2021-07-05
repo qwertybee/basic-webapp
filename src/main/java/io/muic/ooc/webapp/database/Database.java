@@ -24,6 +24,21 @@ public class Database {
         }
     }
 
+    public int getId(String username) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM ssc_2021.user WHERE username=?");
+            preparedStatement.setString(1, username);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return 0;
+    }
+
     public boolean authenticatedUser(String username, String password) {
         boolean check = false;
         try {
@@ -99,14 +114,14 @@ public class Database {
         return allUsers;
     }
 
-    public void editUser(int id, String username, String password, String name) {
+    public void editUser(int currentid, String changeUsername, String changePassword, String changeName) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "UPDATE ssc_2021.user SET username=?, password=?, name? WHERE id=?");
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-            preparedStatement.setString(3, name);
-            preparedStatement.setInt(4, id);
+                    "UPDATE ssc_2021.user SET username=?, password=?, name=? WHERE id=?");
+            preparedStatement.setString(1, changeUsername);
+            preparedStatement.setString(2, changePassword);
+            preparedStatement.setString(3, changeName);
+            preparedStatement.setInt(4, currentid);
             preparedStatement.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

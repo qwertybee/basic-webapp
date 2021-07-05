@@ -44,7 +44,7 @@ public class HomeServlet extends AbstractRoutableHttpServlet {
                 req.setAttribute("deletionSucceeded", "Account deletion completed");
             }
             if (editUser != null) {
-                resp.sendRedirect("/edit.jsp");
+                resp.sendRedirect("/edit");
             }
         }
         doGet(req, resp);
